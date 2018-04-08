@@ -2,7 +2,7 @@
 //  EZAnimationManager.h
 //  EZAnimation
 //
-//  Created by qmtv on 2018/4/4.
+//  Created by clOudbb on 2018/4/4.
 //  Copyright © 2018年 qmtv. All rights reserved.
 //
 
@@ -16,7 +16,8 @@
 
 - (instancetype)initWithType:(EZAnimationType)type maker:(EZAnimationMaker *)maker;
 
-- (EZAnimationManager *)childAniamtion:(EZMaker)maker;
+- (CAAnimation *)childAnimation;
 
 - (CAAnimation *)install;
+- (CAAnimationGroup *)group;
 @end

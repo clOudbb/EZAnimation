@@ -2,7 +2,7 @@
 //  EZAnimationMaker.m
 //  EZAnimation
 //
-//  Created by qmtv on 2018/4/4.
+//  Created by clOudbb on 2018/4/4.
 //  Copyright © 2018年 qmtv. All rights reserved.
 //
 
@@ -87,6 +87,11 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 - (EZAnimationMaker *(^)(NSString *))forKey
 {
     return ^id (NSString *key) {
+        if (!ez_validString(key)) {
+#if DEBUG
+            NSLog(@"animation key is null");
+#endif
+        }
         self->_key = key;
         return self;
     };

@@ -2,7 +2,7 @@
 //  EZAnimationManager.m
 //  EZAnimation
 //
-//  Created by qmtv on 2018/4/4.
+//  Created by clOudbb on 2018/4/4.
 //  Copyright © 2018年 qmtv. All rights reserved.
 //
 
@@ -47,6 +47,7 @@ static NSString * const ez_keyPath = @"_keyP";
 {
     EZAnimationType _type;
     EZAnimationMaker *_maker;
+    CAAnimationGroup *_group;
 }
 
 - (instancetype)initWithType:(EZAnimationType)type maker:(EZAnimationMaker *)maker
@@ -105,6 +106,8 @@ static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
     }
 }
 
+#pragma mark -
+
 - (CAAnimation *)install
 {
     CAAnimation *ani = nil;
@@ -141,6 +144,23 @@ static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
             break;
     }
     return ani;
+}
+
+- (CAAnimationGroup *)group
+{
+    CAAnimationGroup *g = [CAAnimationGroup animation];
+    self->_group = g;
+    @autoreleasepool {
+        for (EZAnimationProperty *pro in _maker.animationPropertys) {
+            propertyFilter(g, pro);
+        }
+    }
+    return g;
+}
+
+- (CAAnimation *)childAnimation
+{
+    return [self install];
 }
 
 @end

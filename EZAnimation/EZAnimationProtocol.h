@@ -2,7 +2,7 @@
 //  EZAnimationProtocol.h
 //  EZAnimation
 //
-//  Created by qmtv on 2018/4/8.
+//  Created by clOudbb on 2018/4/8.
 //  Copyright © 2018年 qmtv. All rights reserved.
 //
 
