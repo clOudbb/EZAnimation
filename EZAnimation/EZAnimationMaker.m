@@ -26,11 +26,16 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     }
 }
 
+@interface EZAnimationMaker()
+@end
+
 @implementation EZAnimationMaker
 {
     NSString *_key;
-    bool _normalCoord;
+    NSString *_keyP;    //这里要声明一个原始的NSString，因为typeof的类名iOS不会识别为实现了NSCoding协议
 }
+
+
 
 //思路  用manager管理
 //要有管理当前所有动画的功能
@@ -87,6 +92,14 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
+- (EZAnimationMaker *(^)(EZAnimationKeyPath *))animKeyPath
+{
+    return ^id(EZAnimationKeyPath *keyPath) {
+        self->_keyP = keyPath;
+        return self;
+    };
+}
+
 - (EZAnimationMaker *(^)(id))fromValue
 {
     return ^id(id fromValue) {
@@ -115,6 +128,17 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 {
     return ^id(id byValue) {
 //        p.type = EZAnimationTypeBasic;
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(bool))autoreverses
+{
+    return ^id (bool autoreverses) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(autoreverses);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
         return self;
     };
 }

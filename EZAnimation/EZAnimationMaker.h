@@ -42,11 +42,11 @@
 
 #pragma mark --
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^animKeyPath)(EZAnimationKeyPath *animKeyPath);
 
 #pragma mark -- custom features
 @property (nonatomic, copy, readonly) EZAnimationMaker *with;
 
-@property (nonatomic, copy) EZAnimationKeyPath *animKeyPath;
 @property (nonatomic, strong) NSMutableArray <EZAnimationProperty *>*animationPropertys;
 
 @end

@@ -28,10 +28,10 @@
     
     CALayer *layer = [CALayer layer];
     layer.backgroundColor = [UIColor orangeColor].CGColor;
-    layer.frame = (CGRect){0, 100, 100 , 100};
+    layer.frame = (CGRect){100, 100, 100 , 100};
     [self.view.layer addSublayer:layer];
     [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
-        maker.duration(2).fromValue(@0).toValue(@375).forKey(EZAnimationKeyPathPositionX);
+        maker.duration(1).fromValue(@0).toValue(@1).repeatCount(MAXFLOAT).autoreverses(true).animKeyPath(EZAnimationKeyPathOpacity);
     }];
 }
 

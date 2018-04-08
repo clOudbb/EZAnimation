@@ -41,6 +41,7 @@ EZAnimationKeyPath * const EZAnimationKeyPathBorderWidth = @"borderWidth";
 
 EZAnimationKeyPath * const EZAnimationKeyPathOpacity = @"opacity";
 
+static NSString * const ez_keyPath = @"_keyP";
 
 @implementation EZAnimationManager
 {
@@ -72,7 +73,22 @@ static inline bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(autoreverses))]) {
         ani.autoreverses = [pro.value boolValue];
         return true;
-    } 
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(repeatCount))]) {
+        ani.repeatCount = [pro.value floatValue];
+        return true;
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(repeatDuration))]) {
+        ani.repeatDuration = [pro.value doubleValue];
+        return true;
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(speed))]) {
+        ani.speed = [pro.value floatValue];
+        return true;
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(beginTime))]) {
+        ani.beginTime = [pro.value doubleValue];
+        return true;
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(timingFunction))]) {
+        ani.timingFunction = pro.value;
+        return true;
+    }
     return false;
 }
 
@@ -95,7 +111,12 @@ static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
     switch (_type) {
         case EZAnimationTypeBasic:
         {
-            ani = [CABasicAnimation animationWithKeyPath:_maker.animKeyPath];
+            if (!ez_validString([_maker valueForKeyPath:ez_keyPath])) {
+                if (DEBUG) {
+                    @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"Must be nonnull" userInfo:nil];
+                }
+            }
+            ani = [CABasicAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
             CABasicAnimation *base = (CABasicAnimation *)ani;
             @autoreleasepool {
                 for (EZAnimationProperty *pro in _maker.animationPropertys) {
