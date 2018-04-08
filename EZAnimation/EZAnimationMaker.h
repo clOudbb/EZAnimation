@@ -39,7 +39,6 @@
 
 #pragma mark -- spring
 
-
 #pragma mark --
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^animKeyPath)(EZAnimationKeyPath *animKeyPath);
