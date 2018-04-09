@@ -53,6 +53,23 @@
     [self addAnimation:result forKey:key];
 }
 
+- (void)pause
+{
+    CFTimeInterval pausetime = [self convertTime:CACurrentMediaTime() fromLayer:nil];
+    self.speed = 0;
+    self.timeOffset = pausetime;
+}
+
+- (void)resume
+{
+    CFTimeInterval pausetime = self.timeOffset;
+    self.timeOffset = 0.f;
+    self.beginTime = 0.f;
+    self.speed = 1.f;
+    CFTimeInterval resumetime = [self convertTime:CACurrentMediaTime() fromLayer:nil] - pausetime;
+    self.beginTime = resumetime;
+}
+
 #pragma mark - setter getter
 
 - (void)setGroupAnimations:(NSMutableArray<CAAnimation *> *)groupAnimations

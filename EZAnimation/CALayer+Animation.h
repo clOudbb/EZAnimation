@@ -20,5 +20,6 @@
 
 - (CALayer *)childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker;
 
-
+- (void)pause;
+- (void)resume;
 @end

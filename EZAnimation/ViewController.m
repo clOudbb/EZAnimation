@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "EZAnimation.h"
+
+typedef void (^ButtonBlock)(void);
+
 @interface ViewController ()
 
 @end
@@ -18,18 +21,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    
-//    CALayer *layer;
-//    [[layer groupAinmation:^(EZAnimationMaker *maker) {
-//
-//    }] childAniamtion:^(EZAnimationMaker *maker) {
-//
-//    }];
+    [self setupButton];
     
     CALayer *layer = [CALayer layer];
     layer.backgroundColor = [UIColor orangeColor].CGColor;
     layer.frame = (CGRect){100, 100, 100 , 100};
     [self.view.layer addSublayer:layer];
+    _layer = layer;
 //    [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
 //        maker.duration(1)
 //        .fromValue(@0)
@@ -47,12 +45,47 @@
 //        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
 //    }];
 
-    [layer ez_animationWithType:EZAnimationTypeKey makerAnimation:^(EZAnimationMaker *maker) {
-        maker.values(@[@50, @100, @300, @500]).keyTimes(@[@0, @0.5, @0.6, @1]).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
-    }];
+//    [layer ez_animationWithType:EZAnimationTypeKey makerAnimation:^(EZAnimationMaker *maker) {
+//        maker.values(@[@50, @100, @300, @500]).keyTimes(@[@0, @0.5, @0.6, @1]).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
+//    }];
     
+    [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
+        maker.toValue(@500).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
+    }];
 }
 
+static CALayer *_layer;
+- (void)setupButton
+{
+    UIButton *b1 = [self createButton:[UIColor orangeColor] frame:(CGRect){50, 500, 70, 30} title:@"pause"];
+    [b1 addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton *b2 = [self createButton:[UIColor grayColor] frame:(CGRect){255, 500, 70, 30} title:@"resume"];
+    [b2 addTarget:self action:@selector(buttonActionSeco:) forControlEvents:UIControlEventTouchUpInside];
+
+}
+
+- (UIButton *)createButton:(UIColor *)color frame:(CGRect)frame title:(NSString *)title
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = color;
+    button.frame = frame;
+    [button setTitle:title forState:UIControlStateNormal];
+    [self.view addSubview:button];
+    return button;
+}
+
+- (void)buttonAction:(UIButton *)button
+{
+    [_layer pause];
+}
+
+- (void)buttonActionSeco:(UIButton *)button
+{
+    [_layer resume];
+}
+     
+     
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
