@@ -19,10 +19,10 @@ typedef enum {
 } kEZFillMode;
 
 typedef enum {
-    EZAnimationTypeBasic = 0,
+    EZAnimationTypeOther = 0,
+    EZAnimationTypeBasic,
     EZAnimationTypeKey,
     EZAnimationTypeSpring,
-    EZAnimationTypeGroup,
 } EZAnimationType;
 
 typedef void(^EZMaker)(EZAnimationMaker *maker);

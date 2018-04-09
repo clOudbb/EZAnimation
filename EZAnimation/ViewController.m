@@ -39,14 +39,18 @@
 //        .animKeyPath(EZAnimationKeyPathOpacity);
 //    }];
     
-    [[[layer childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
-        maker.duration(5).animKeyPath(EZAnimationKeyPathOpacity).fromValue(@0).toValue(@1);
-    }] childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
-        maker.duration(5).animKeyPath(EZAnimationKeyPathPositionY).fromValue(@100).toValue(@500);
-    }] groupAinmation:^(EZAnimationMaker *maker) {
-        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
-    }];
+//    [[[layer childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
+//        maker.duration(5).animKeyPath(EZAnimationKeyPathOpacity).fromValue(@0).toValue(@1);
+//    }] childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
+//        maker.duration(5).animKeyPath(EZAnimationKeyPathPositionY).fromValue(@100).toValue(@500);
+//    }] groupAinmation:^(EZAnimationMaker *maker) {
+//        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
+//    }];
 
+    [layer ez_animationWithType:EZAnimationTypeSpring makerAnimation:^(EZAnimationMaker *maker) {
+        maker.duration(5).fromValue(@0).toValue(@500).mass(1).animKeyPath(EZAnimationKeyPathPositionY);
+    }];
+    
 }
 
 

@@ -63,6 +63,11 @@ static NSString * const ez_keyPath = @"_keyP";
 static inline bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
 {
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(duration))]) {
+        if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
+            CASpringAnimation *spring = (CASpringAnimation *)ani;
+            ani.duration = spring.settlingDuration;
+            return true;
+        }
         ani.duration = [pro.value doubleValue];
         return true;
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(fillMode))]) {
@@ -93,16 +98,34 @@ static inline bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
     return false;
 }
 
-static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
+static inline bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
 {
-    if (propertyFilter(ani, pro)) return;
-    if (pro.type != EZAnimationTypeBasic) return;
+    if (propertyFilter(ani, pro)) return true;
+    if (pro.type != EZAnimationTypeBasic && pro.type != EZAnimationTypeSpring) return true;
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(toValue))]) {
         ani.toValue = pro.value;
+        return true;
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(fromValue))]) {
         ani.fromValue = pro.value;
+        return true;
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(byValue))]) {
         ani.byValue = pro.value;
+        return true;
+    }
+    return false;
+}
+
+static inline void propertySpringFilter(CASpringAnimation *spring, EZAnimationProperty *pro)
+{
+    if (propertyBaseFilter(spring, pro)) return;
+    if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(mass))]) {
+        spring.mass = [pro.value floatValue];
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(stiffness))]) {
+        spring.stiffness = [pro.value floatValue];
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(damping))]) {
+        spring.damping = [pro.value floatValue];
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(initialVelocity))]) {
+        spring.initialVelocity = [pro.value floatValue];
     }
 }
 
@@ -111,14 +134,14 @@ static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
 - (CAAnimation *)install
 {
     CAAnimation *ani = nil;
+    if (!ez_validString([_maker valueForKeyPath:ez_keyPath])) {
+        if (DEBUG) {
+            @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"Must be nonnull" userInfo:nil];
+        }
+    }
     switch (_type) {
         case EZAnimationTypeBasic:
         {
-            if (!ez_validString([_maker valueForKeyPath:ez_keyPath])) {
-                if (DEBUG) {
-                    @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"Must be nonnull" userInfo:nil];
-                }
-            }
             ani = [CABasicAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
             CABasicAnimation *base = (CABasicAnimation *)ani;
             @autoreleasepool {
@@ -136,7 +159,14 @@ static inline void propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
             break;
         case EZAnimationTypeSpring:
         {
-            
+            ani = [CASpringAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
+            CASpringAnimation *spring = (CASpringAnimation *)ani;
+            @autoreleasepool {
+                for (EZAnimationProperty *pro in _maker.animationPropertys) {
+                    propertySpringFilter(spring, pro);
+                }
+            }
+            return spring;
         }
             break;
             

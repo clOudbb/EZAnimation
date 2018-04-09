@@ -105,38 +105,6 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
-- (EZAnimationMaker *(^)(id))fromValue
-{
-    return ^id(id fromValue) {
-        EZAnimationProperty *p = [EZAnimationProperty new];
-        p.value = fromValue;
-        p.propertyName = NSStringFromSelector(_cmd);
-        p.type = EZAnimationTypeBasic;
-        [self.animationPropertys addObject:p];
-        return self;
-    };
-}
-
-- (EZAnimationMaker *(^)(id))toValue
-{
-    return ^id(id toValue) {
-        EZAnimationProperty *p = [EZAnimationProperty new];
-        p.value = toValue;
-        p.propertyName = NSStringFromSelector(_cmd);
-        p.type = EZAnimationTypeBasic;
-        [self.animationPropertys addObject:p];
-        return self;
-    };
-}
-
-- (EZAnimationMaker *(^)(id))byValue
-{
-    return ^id(id byValue) {
-//        p.type = EZAnimationTypeBasic;
-        return self;
-    };
-}
-
 - (EZAnimationMaker *(^)(bool))autoreverses
 {
     return ^id (bool autoreverses) {
@@ -225,6 +193,8 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
+#pragma mark -- key frame
+
 - (EZAnimationMaker *(^)(NSArray *))values
 {
     return ^id(NSArray *values) {
@@ -273,5 +243,88 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
+#pragma mark -- base
+
+- (EZAnimationMaker *(^)(id))fromValue
+{
+    return ^id(id fromValue) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = fromValue;
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeBasic;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(id))toValue
+{
+    return ^id(id toValue) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = toValue;
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeBasic;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(id))byValue
+{
+    return ^id(id byValue) {
+        //        p.type = EZAnimationTypeBasic;
+        return self;
+    };
+}
+
+#pragma mark -- spring
+
+- (EZAnimationMaker *(^)(float))mass
+{
+    return ^id(float mass) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(mass);
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeSpring;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(float))stiffness
+{
+    return ^id(float stif) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(stif);
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeSpring;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(float))damping
+{
+    return ^id(float damping) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(damping);
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeSpring;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(float))initialVelocity
+{
+    return ^id(float initial) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(initial);
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeSpring;
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
 
 @end

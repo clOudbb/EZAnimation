@@ -9,14 +9,18 @@
 #import "CALayer+Animation.h"
 #import "EZAnimationMaker.h"
 #import <objc/runtime.h>
-
+#ifdef DEBUG
+# define DLog(fmt, ...) NSLog((@"[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+# define DLog(...);
+#endif
 @implementation CALayer (Animation)
 
 - (EZAnimationManager *)groupAinmation:(EZMaker)maker
 {
     EZAnimationMaker *make = [[EZAnimationMaker alloc] init];
     maker(make);
-    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeGroup maker:make];
+    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:make];
     CAAnimationGroup *group = [manager group];
     group.animations = self.groupAnimations;
     [self addAnimation:group forKey:[make valueForKey:@"_key"]];
@@ -42,8 +46,14 @@
     maker(m);
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     CAAnimation *result = [manager install];
-    [self addAnimation:result forKey:[m valueForKey:@"_key"]];
+    NSString *key = [m valueForKey:@"_key"];
+    if (!ez_validString(key)) {
+        DLog(@"animation key is null");
+    }
+    [self addAnimation:result forKey:key];
 }
+
+#pragma mark - setter getter
 
 - (void)setGroupAnimations:(NSMutableArray<CAAnimation *> *)groupAnimations
 {

@@ -31,13 +31,18 @@
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^fromValue)(id fromValue);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^byValue)(id byValue);
 
-#pragma mark -- key
+#pragma mark -- keyframe
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^values)(NSArray *values);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^keyTimes)(NSArray *keyTimes);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^timingFunctions)(NSArray<CAMediaTimingFunction *> * timingFunctions);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^path)(CGPathRef path);
 
 #pragma mark -- spring
+
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^mass)(float mass);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^stiffness)(float stiffness);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^damping)(float damping);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^initialVelocity)(float initialVelocity);
 
 #pragma mark --
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
