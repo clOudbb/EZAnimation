@@ -129,6 +129,27 @@ static inline void propertySpringFilter(CASpringAnimation *spring, EZAnimationPr
     }
 }
 
+static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZAnimationProperty *pro)
+{
+    if (propertyFilter(keyAnimation, pro)) return;
+    if (pro.type != EZAnimationTypeKey) return;
+    if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(values))]) {
+        if ([pro.value isKindOfClass:[NSArray class]]) {
+            keyAnimation.values = pro.value;
+        }
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(keyTimes))]) {
+        if ([pro.value isKindOfClass:[NSArray class]]) {
+            keyAnimation.keyTimes = pro.value;
+        }
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(path))]) {
+        keyAnimation.path = (__bridge CGPathRef _Nullable)(pro.value);
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(timingFunctions))]) {
+        if ([pro.value isKindOfClass:[NSArray class]]) {
+            keyAnimation.timingFunctions = pro.value;
+        }
+    }
+}
+
 #pragma mark -
 
 - (CAAnimation *)install
@@ -154,7 +175,14 @@ static inline void propertySpringFilter(CASpringAnimation *spring, EZAnimationPr
             break;
         case EZAnimationTypeKey:
         {
-            
+            ani = [CAKeyframeAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
+            CAKeyframeAnimation *key = (CAKeyframeAnimation *)ani;
+            @autoreleasepool {
+                for (EZAnimationProperty *pro  in _maker.animationPropertys) {
+                    propertyKeyframeFilter(key, pro);
+                }
+            }
+            return key;
         }
             break;
         case EZAnimationTypeSpring:

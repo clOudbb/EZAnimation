@@ -47,8 +47,8 @@
 //        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
 //    }];
 
-    [layer ez_animationWithType:EZAnimationTypeSpring makerAnimation:^(EZAnimationMaker *maker) {
-        maker.duration(5).fromValue(@0).toValue(@500).mass(1).animKeyPath(EZAnimationKeyPathPositionY);
+    [layer ez_animationWithType:EZAnimationTypeKey makerAnimation:^(EZAnimationMaker *maker) {
+        maker.values(@[@50, @100, @300, @500]).keyTimes(@[@0, @0.5, @0.6, @1]).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
     }];
     
 }

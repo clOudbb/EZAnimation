@@ -44,29 +44,12 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 //要有暂停功能
 //增加一个将锚点更换为uiview坐标系的功能
 
+//缺少propertAnimation的属性
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        CABasicAnimation *ani = [CABasicAnimation animationWithKeyPath:@"bounds"];
-        ani.toValue = @1;
-        ani.fromValue = @0;
-        ani.byValue = @0;
-        ani.duration = 0.5;
-        ani.fillMode = kCAFillModeForwards;
-        ani.repeatCount = 1;
-        ani.autoreverses = false;
-        ani.removedOnCompletion = true;   //完成后是否销毁动画 forwards
-        ani.speed = 0;
-        ani.additive = false;   //该属性指定该属性动画是否以当前动画效果为基础。
-        
-        CAKeyframeAnimation *kAni = [CAKeyframeAnimation animationWithKeyPath:@"position"];
-        kAni.values = @[];
-        kAni.keyTimes = @[];
-        CGPathRef ref = NULL;
-        kAni.path = ref;
-        kAni.timingFunctions = @[];
-        kAni.timeOffset = 0;   //时间偏移量  用来暂停动画
         
     }
     return self;
@@ -121,6 +104,17 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     return ^id (float speed) {
         EZAnimationProperty *p = [EZAnimationProperty new];
         p.value = @(speed);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(kEZFillMode))fillMode
+{
+    return ^id (kEZFillMode mode) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = getFillMode(mode);
         p.propertyName = NSStringFromSelector(_cmd);
         [self.animationPropertys addObject:p];
         return self;
