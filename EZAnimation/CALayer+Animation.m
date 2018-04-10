@@ -9,11 +9,7 @@
 #import "CALayer+Animation.h"
 #import "EZAnimationMaker.h"
 #import <objc/runtime.h>
-#ifdef DEBUG
-# define DLog(fmt, ...) NSLog((@"[文件名:%s]\n" "[函数名:%s]\n" "[行号:%d] \n" fmt), __FILE__, __FUNCTION__, __LINE__, ##__VA_ARGS__);
-#else
-# define DLog(...);
-#endif
+
 @implementation CALayer (Animation)
 
 - (EZAnimationManager *)groupAinmation:(EZMaker)maker
@@ -48,7 +44,7 @@
     CAAnimation *result = [manager install];
     NSString *key = [m valueForKey:@"_key"];
     if (!ez_validString(key)) {
-        DLog(@"animation key is null");
+        EZLog(@"animation key is null");
     }
     [self addAnimation:result forKey:key];
 }

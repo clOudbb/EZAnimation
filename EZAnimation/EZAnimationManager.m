@@ -43,11 +43,19 @@ EZAnimationKeyPath * const EZAnimationKeyPathOpacity = @"opacity";
 
 static NSString * const ez_keyPath = @"_keyP";
 
+struct EZAnimationContext {
+    void *value;
+    void *obj;
+    EZAnimationType type;
+    void *ani;
+};
+
 @implementation EZAnimationManager
 {
     EZAnimationType _type;
     EZAnimationMaker *_maker;
     CAAnimationGroup *_group;
+    CFMutableArrayRef _animationPropertys;
 }
 
 - (instancetype)initWithType:(EZAnimationType)type maker:(EZAnimationMaker *)maker
@@ -56,6 +64,7 @@ static NSString * const ez_keyPath = @"_keyP";
     if (self) {
         _type = type;
         _maker = maker;
+        _animationPropertys = CFArrayCreateMutableCopy(CFAllocatorGetDefault(), 0, (__bridge const void *)_maker.animationPropertys);
     }
     return self;
 }
@@ -160,16 +169,13 @@ static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZA
             @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"Must be nonnull" userInfo:nil];
         }
     }
+
     switch (_type) {
         case EZAnimationTypeBasic:
         {
             ani = [CABasicAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
             CABasicAnimation *base = (CABasicAnimation *)ani;
-            @autoreleasepool {
-                for (EZAnimationProperty *pro in _maker.animationPropertys) {
-                    propertyBaseFilter(base, pro);
-                }
-            }
+            [self enumerateObjUsingBlock:base];
             return base;
         }
             break;
@@ -177,11 +183,7 @@ static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZA
         {
             ani = [CAKeyframeAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
             CAKeyframeAnimation *key = (CAKeyframeAnimation *)ani;
-            @autoreleasepool {
-                for (EZAnimationProperty *pro  in _maker.animationPropertys) {
-                    propertyKeyframeFilter(key, pro);
-                }
-            }
+            [self enumerateObjUsingBlock:key];
             return key;
         }
             break;
@@ -189,11 +191,7 @@ static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZA
         {
             ani = [CASpringAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
             CASpringAnimation *spring = (CASpringAnimation *)ani;
-            @autoreleasepool {
-                for (EZAnimationProperty *pro in _maker.animationPropertys) {
-                    propertySpringFilter(spring, pro);
-                }
-            }
+            [self enumerateObjUsingBlock:spring];
             return spring;
         }
             break;
@@ -201,6 +199,7 @@ static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZA
         default:
             break;
     }
+    CFRelease(_animationPropertys);
     return ani;
 }
 
@@ -216,9 +215,50 @@ static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZA
     return g;
 }
 
+static void EZAnimationApply(const void *obj, void * context)
+{
+    struct EZAnimationContext *_context = context;
+    EZAnimationType _type = _context->type;
+    EZAnimationProperty *pro = (__bridge EZAnimationProperty *)obj;
+    switch (_type) {
+        case EZAnimationTypeBasic:
+        {
+            CABasicAnimation *base = (__bridge CABasicAnimation *)_context->ani;
+            propertyBaseFilter(base, pro);
+        }
+            break;
+        case EZAnimationTypeKey:
+        {
+            CAKeyframeAnimation *key = (__bridge CAKeyframeAnimation *)_context->ani;
+            propertyKeyframeFilter(key, pro);
+        }
+            break;
+        case EZAnimationTypeSpring:
+        {
+            CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
+            propertySpringFilter(spring, pro);
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)enumerateObjUsingBlock:(CAAnimation *)ani
+{
+    CFIndex count = CFArrayGetCount(self->_animationPropertys);
+    if (count <= 0) return;
+    struct EZAnimationContext context = {0};
+    context.type = _type;
+    context.ani = (__bridge void *)ani;
+    CFArrayApplyFunction(self->_animationPropertys, CFRangeMake(0, count), EZAnimationApply, &context);
+}
+
 - (CAAnimation *)childAnimation
 {
     return [self install];
 }
+
 
 @end
