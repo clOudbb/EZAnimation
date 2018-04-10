@@ -14,12 +14,15 @@
 
 - (EZAnimationManager *)groupAinmation:(EZMaker)maker
 {
-    EZAnimationMaker *make = [[EZAnimationMaker alloc] init];
-    maker(make);
-    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:make];
+    EZAnimationMaker *m = [[EZAnimationMaker alloc] init];
+    maker(m);
+    if (m.isNormalCoordinate) {
+        self.anchorPoint = CGPointMake(0, 0);
+    }
+    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
     CAAnimationGroup *group = [manager group];
     group.animations = self.groupAnimations;
-    [self addAnimation:group forKey:[make valueForKey:@"_key"]];
+    [self addAnimation:group forKey:[m valueForKey:@"_key"]];
     return manager;
 }
 
@@ -27,6 +30,9 @@
 {
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
+    if (m.isNormalCoordinate) {
+        self.anchorPoint = CGPointMake(0, 0);
+    }
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     if (!self.groupAnimations) {
         self.groupAnimations = [@[] mutableCopy];
@@ -40,6 +46,9 @@
 {
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
+    if (m.isNormalCoordinate) {
+        self.anchorPoint = CGPointMake(0, 0);
+    }
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     CAAnimation *result = [manager install];
     NSString *key = [m valueForKey:@"_key"];

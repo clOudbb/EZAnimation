@@ -13,6 +13,7 @@
 @interface CALayer (Animation)
 
 @property (nonatomic, strong) NSMutableArray <CAAnimation *>*groupAnimations;
+
 /**
  *  base keyframe spring 动画使用该api
  */

@@ -321,4 +321,14 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
+#pragma mark --
+
+- (EZAnimationMaker *(^)(bool))normalCoordinate
+{
+    return ^id(bool nomral) {
+        self->_isNormalCoordinate = nomral;
+        return self;
+    };
+}
+
 @end

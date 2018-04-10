@@ -50,7 +50,8 @@
 
 #pragma mark -- custom features
 @property (nonatomic, copy, readonly) EZAnimationMaker *with;
-
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^normalCoordinate)(bool normal);  /**<UIView坐标系*/
+@property (nonatomic, assign, readonly) bool isNormalCoordinate;
 @property (nonatomic, strong) NSMutableArray <EZAnimationProperty *>*animationPropertys;
 
 @end

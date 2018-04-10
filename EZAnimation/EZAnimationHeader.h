@@ -33,6 +33,8 @@ typedef enum {
 
 typedef void(^EZMaker)(EZAnimationMaker *maker);
 typedef NSString EZAnimationKeyPath;
+typedef void(^NormalCoordinate) (bool isNormal);
+
 
 FOUNDATION_STATIC_INLINE bool ez_validString(NSString *str)
 {

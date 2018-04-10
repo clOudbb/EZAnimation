@@ -11,7 +11,6 @@
 @import QuartzCore;
 @class EZAnimationMaker;
 
-
 @interface EZAnimationManager : NSObject
 
 - (instancetype)initWithType:(EZAnimationType)type maker:(EZAnimationMaker *)maker;
@@ -20,4 +19,5 @@
 
 - (CAAnimation *)install;
 - (CAAnimationGroup *)group;
+
 @end

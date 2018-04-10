@@ -50,7 +50,7 @@ typedef void (^ButtonBlock)(void);
 //    }];
     
     [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
-        maker.toValue(@500).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
+        maker.fromValue(@0).toValue(@375).duration(10).animKeyPath(EZAnimationKeyPathPositionX).normalCoordinate(true);
     }];
 }
 
