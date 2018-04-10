@@ -12,13 +12,21 @@
 
 @implementation CALayer (Animation)
 
+- (void)changeAnchorPoint:(bool)isNormal
+{
+    if (isNormal) {
+        self.anchorPoint = CGPointMake(0, 0);
+    }
+}
+
+#pragma mark - public
+
 - (EZAnimationManager *)groupAinmation:(EZMaker)maker
 {
     EZAnimationMaker *m = [[EZAnimationMaker alloc] init];
     maker(m);
-    if (m.isNormalCoordinate) {
-        self.anchorPoint = CGPointMake(0, 0);
-    }
+    [self changeAnchorPoint:m.isNormalCoordinate];
+    
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
     CAAnimationGroup *group = [manager group];
     group.animations = self.groupAnimations;
@@ -30,9 +38,8 @@
 {
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
-    if (m.isNormalCoordinate) {
-        self.anchorPoint = CGPointMake(0, 0);
-    }
+    [self changeAnchorPoint:m.isNormalCoordinate];
+
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     if (!self.groupAnimations) {
         self.groupAnimations = [@[] mutableCopy];
@@ -46,9 +53,8 @@
 {
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
-    if (m.isNormalCoordinate) {
-        self.anchorPoint = CGPointMake(0, 0);
-    }
+    [self changeAnchorPoint:m.isNormalCoordinate];
+
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     CAAnimation *result = [manager install];
     NSString *key = [m valueForKey:@"_key"];
