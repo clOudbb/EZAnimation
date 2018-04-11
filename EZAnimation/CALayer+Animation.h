@@ -40,4 +40,5 @@ typedef void(^AnimationDelegateCompletion)(bool flag);
 
 
 @property (nonatomic, assign, readonly, getter=isPause) bool isPausing;
+
 @end

@@ -39,10 +39,10 @@
 
 #pragma mark -- spring
 
-@property (nonatomic, copy, readonly) EZAnimationMaker *(^mass)(float mass);
-@property (nonatomic, copy, readonly) EZAnimationMaker *(^stiffness)(float stiffness);
-@property (nonatomic, copy, readonly) EZAnimationMaker *(^damping)(float damping);
-@property (nonatomic, copy, readonly) EZAnimationMaker *(^initialVelocity)(float initialVelocity);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^mass)(float mass) API_AVAILABLE(ios(9.0));
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^stiffness)(float stiffness) API_AVAILABLE(ios(9.0));
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^damping)(float damping) API_AVAILABLE(ios(9.0));
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^initialVelocity)(float initialVelocity) API_AVAILABLE(ios(9.0));
 
 #pragma mark --
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
