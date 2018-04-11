@@ -37,4 +37,7 @@ typedef void(^AnimationDelegateCompletion)(bool flag);
  * 动画重新执行
  */
 - (void)resume;
+
+
+@property (nonatomic, assign, readonly, getter=isPause) bool isPausing;
 @end

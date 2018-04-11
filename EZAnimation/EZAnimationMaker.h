@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "EZAnimationHeader.h"
-#import "EZAnimationProtocol.h"
+
 @class EZAnimationProperty;
 @class CAMediaTimingFunction;
 @import CoreGraphics;

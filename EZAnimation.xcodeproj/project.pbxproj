@@ -61,7 +61,6 @@
 		57C791342074D49600AE4261 /* EZAnimationMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZAnimationMaker.h; sourceTree = "<group>"; };
 		57C791352074D49600AE4261 /* EZAnimationMaker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EZAnimationMaker.m; sourceTree = "<group>"; };
 		57C7913A2074DD7900AE4261 /* EZAnimationHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZAnimationHeader.h; sourceTree = "<group>"; };
-		57C7913F2079ACE100AE4261 /* EZAnimationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZAnimationProtocol.h; sourceTree = "<group>"; };
 		57C791402079B37400AE4261 /* CALayer+Animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CALayer+Animation.h"; sourceTree = "<group>"; };
 		57C791412079B37400AE4261 /* CALayer+Animation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Animation.m"; sourceTree = "<group>"; };
 		57C791432079C00300AE4261 /* EZAnimationProperty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZAnimationProperty.h; sourceTree = "<group>"; };
@@ -128,7 +127,6 @@
 				57C791432079C00300AE4261 /* EZAnimationProperty.h */,
 				57C791442079C00300AE4261 /* EZAnimationProperty.m */,
 				57C7913A2074DD7900AE4261 /* EZAnimationHeader.h */,
-				57C7913F2079ACE100AE4261 /* EZAnimationProtocol.h */,
 				57C790F82074C93C00AE4261 /* ViewController.h */,
 				57C790F92074C93C00AE4261 /* ViewController.m */,
 				57C790FB2074C93C00AE4261 /* Main.storyboard */,

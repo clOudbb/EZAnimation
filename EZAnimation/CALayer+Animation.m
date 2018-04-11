@@ -15,6 +15,7 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
 
 @interface CALayer(_Animation)<CAAnimationDelegate>
 @property (nonatomic, strong, readwrite, nullable) NSMutableArray <CAAnimation *>*groupAnimations;
+@property (nonatomic, assign) bool isPause;
 @end
 
 @implementation CALayer (_Animation)
@@ -28,6 +29,16 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
 - (NSMutableArray<CAAnimation *> *)groupAnimations
 {
     return objc_getAssociatedObject(self, _cmd);
+}
+
+- (void)setIsPause:(bool)isPause
+{
+    objc_setAssociatedObject(self, @selector(isPause), @(isPause), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (bool)isPause
+{
+    return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
 #pragma mark - delegate
@@ -80,8 +91,8 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
     CAAnimationGroup *group = [manager group];
-    [group setValue:start forKey:@"ez_animation_delegate_key_for_start"];
-    [group setValue:completion forKey:@"ez_animation_delegate_key_for_completion"];
+    [group setValue:start forKey:ez_animation_delegate_key_for_start];
+    [group setValue:completion forKey:ez_animation_delegate_key_for_completion];
     group.animations = self.groupAnimations;
     [self addAnimation:group forKey:[m valueForKey:@"_key"]];
 }
@@ -125,8 +136,8 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     CAAnimation *result = [manager install];
     result.delegate = self;
-    [result setValue:start forKey:@"ez_animation_delegate_key_for_start"];
-    [result setValue:completion forKey:@"ez_animation_delegate_key_for_completion"];
+    [result setValue:start forKey:ez_animation_delegate_key_for_start];
+    [result setValue:completion forKey:ez_animation_delegate_key_for_completion];
     
     NSString *key = [m valueForKey:@"_key"];
     if (!ez_validString(key)) {
@@ -140,16 +151,20 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     CFTimeInterval pausetime = [self convertTime:CACurrentMediaTime() fromLayer:nil];
     self.speed = 0;
     self.timeOffset = pausetime;
+    self.isPause = true;
 }
 
 - (void)resume
 {
+    if (!self.isPause) return;
     CFTimeInterval pausetime = self.timeOffset;
     self.timeOffset = 0.f;
     self.beginTime = 0.f;
     self.speed = 1.f;
     CFTimeInterval resumetime = [self convertTime:CACurrentMediaTime() fromLayer:nil] - pausetime;
     self.beginTime = resumetime;
+    
+    self.isPause = false;
 }
 
 @end

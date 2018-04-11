@@ -40,7 +40,6 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 //思路  用manager管理
 //要有管理当前所有动画的功能
 //注意协议处理
-//要有代理方法的回调
 
 //缺少propertAnimation的属性
 
