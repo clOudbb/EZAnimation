@@ -28,27 +28,22 @@ typedef void (^ButtonBlock)(void);
     layer.frame = (CGRect){100, 100, 100 , 100};
     [self.view.layer addSublayer:layer];
     _layer = layer;
-//    [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
-//        maker.duration(1)
-//        .fromValue(@0)
-//        .toValue(@1)
-//        .repeatCount(MAXFLOAT)
-//        .autoreverses(true)
-//        .animKeyPath(EZAnimationKeyPathOpacity);
-//    }];
     
-//    [[[layer childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
+    //-- group animation
+//    [[[layer ez_childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
 //        maker.duration(5).animKeyPath(EZAnimationKeyPathOpacity).fromValue(@0).toValue(@1);
-//    }] childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
+//    }] ez_childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
 //        maker.duration(5).animKeyPath(EZAnimationKeyPathPositionY).fromValue(@100).toValue(@500);
 //    }] groupAinmation:^(EZAnimationMaker *maker) {
 //        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
 //    }];
 
+    //-- key animation
 //    [layer ez_animationWithType:EZAnimationTypeKey makerAnimation:^(EZAnimationMaker *maker) {
 //        maker.values(@[@50, @100, @300, @500]).keyTimes(@[@0, @0.5, @0.6, @1]).duration(5).animKeyPath(EZAnimationKeyPathPositionY);
 //    }];
     
+    //-- base
     [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
         maker.fromValue(@0).toValue(@375).duration(10).animKeyPath(EZAnimationKeyPathPositionX).normalCoordinate(true);
     }];

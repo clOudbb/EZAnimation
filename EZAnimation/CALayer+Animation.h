@@ -11,9 +11,6 @@
 #import "EZAnimationManager.h"
 #import "EZAnimationMaker.h"
 @interface CALayer (Animation)
-
-@property (nonatomic, strong) NSMutableArray <CAAnimation *>*groupAnimations;
-
 /**
  *  base keyframe spring 动画使用该api
  */
@@ -21,7 +18,7 @@
 /**
  * group动画子动画用该api组成
  */
-- (CALayer *)childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker;
+- (CALayer *)ez_childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker;
 /**
  * group动画最后通过该api拼装
  */

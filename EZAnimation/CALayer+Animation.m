@@ -10,6 +10,24 @@
 #import "EZAnimationMaker.h"
 #import <objc/runtime.h>
 
+@interface CALayer(_Animation)
+@property (nonatomic, strong, readwrite, nullable) NSMutableArray <CAAnimation *>*groupAnimations;
+@end
+
+@implementation CALayer (_Animation)
+#pragma mark - setter getter
+
+- (void)setGroupAnimations:(NSMutableArray<CAAnimation *> *)groupAnimations
+{
+    objc_setAssociatedObject(self, @selector(groupAnimations), groupAnimations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSMutableArray<CAAnimation *> *)groupAnimations
+{
+    return objc_getAssociatedObject(self, _cmd);
+}
+@end
+
 @implementation CALayer (Animation)
 
 - (void)changeAnchorPoint:(bool)isNormal
@@ -34,7 +52,7 @@
     return manager;
 }
 
-- (CALayer *)childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker
+- (CALayer *)ez_childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker
 {
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
@@ -81,16 +99,5 @@
     self.beginTime = resumetime;
 }
 
-#pragma mark - setter getter
-
-- (void)setGroupAnimations:(NSMutableArray<CAAnimation *> *)groupAnimations
-{
-    objc_setAssociatedObject(self, @selector(groupAnimations), groupAnimations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (NSMutableArray<CAAnimation *> *)groupAnimations
-{
-    return objc_getAssociatedObject(self, _cmd);
-}
 
 @end
