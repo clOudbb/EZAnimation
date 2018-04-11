@@ -41,8 +41,6 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 //要有管理当前所有动画的功能
 //注意协议处理
 //要有代理方法的回调
-//要有暂停功能
-//增加一个将锚点更换为uiview坐标系的功能
 
 //缺少propertAnimation的属性
 
@@ -266,7 +264,11 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 - (EZAnimationMaker *(^)(id))byValue
 {
     return ^id(id byValue) {
-        //        p.type = EZAnimationTypeBasic;
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = byValue;
+        p.propertyName = NSStringFromSelector(_cmd);
+        p.type = EZAnimationTypeBasic;
+        [self.animationPropertys addObject:p];
         return self;
     };
 }

@@ -69,7 +69,7 @@ struct EZAnimationContext {
     return self;
 }
 
-static inline bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
+static bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
 {
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(duration))]) {
         if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
@@ -107,7 +107,7 @@ static inline bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
     return false;
 }
 
-static inline bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
+static bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
 {
     if (propertyFilter(ani, pro)) return true;
     if (pro.type != EZAnimationTypeBasic && pro.type != EZAnimationTypeSpring) return true;
@@ -124,7 +124,7 @@ static inline bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty
     return false;
 }
 
-static inline void propertySpringFilter(CASpringAnimation *spring, EZAnimationProperty *pro)
+static void propertySpringFilter(CASpringAnimation *spring, EZAnimationProperty *pro)
 {
     if (propertyBaseFilter(spring, pro)) return;
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(mass))]) {
@@ -138,7 +138,7 @@ static inline void propertySpringFilter(CASpringAnimation *spring, EZAnimationPr
     }
 }
 
-static inline void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZAnimationProperty *pro)
+static void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZAnimationProperty *pro)
 {
     if (propertyFilter(keyAnimation, pro)) return;
     if (pro.type != EZAnimationTypeKey) return;
