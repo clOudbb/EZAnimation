@@ -44,9 +44,22 @@ typedef void (^ButtonBlock)(void);
 //    }];
     
     //-- base
+//    [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
+//        maker.fromValue(@0).toValue(@375).duration(10).animKeyPath(EZAnimationKeyPathPositionX).normalCoordinate(true);
+//    }];
+    
     [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
-        maker.fromValue(@0).toValue(@375).duration(10).animKeyPath(EZAnimationKeyPathPositionX).normalCoordinate(true);
+        maker.fromValue(@0)
+        .toValue(@375)
+        .duration(10).animKeyPath(EZAnimationKeyPathPositionX).normalCoordinate(true).fillMode(kEZFillModeForwards).removeOnCompletion(false);
+    } start:^{
+        NSLog(@"start");
+    } completion:^(bool flag) {
+        if (flag) {
+            NSLog(@"completion");
+        }
     }];
+    
 }
 
 static CALayer *_layer;

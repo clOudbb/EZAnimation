@@ -80,7 +80,7 @@ static bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
         ani.duration = [pro.value doubleValue];
         return true;
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(fillMode))]) {
-        ani.fillMode = [pro.value stringValue];
+        ani.fillMode = pro.value;
         return true;
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(removeOnCompletion))]) {
         ani.removedOnCompletion = [pro.value boolValue];

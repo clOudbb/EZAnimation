@@ -10,7 +10,10 @@
 #import "EZAnimationMaker.h"
 #import <objc/runtime.h>
 
-@interface CALayer(_Animation)
+static NSString * const ez_animation_delegate_key_for_start = @"ez_animation_delegate_key_for_start";
+static NSString * const ez_animation_delegate_key_for_completion = @"ez_animation_delegate_key_for_completion";
+
+@interface CALayer(_Animation)<CAAnimationDelegate>
 @property (nonatomic, strong, readwrite, nullable) NSMutableArray <CAAnimation *>*groupAnimations;
 @end
 
@@ -26,6 +29,24 @@
 {
     return objc_getAssociatedObject(self, _cmd);
 }
+
+#pragma mark - delegate
+- (void)animationDidStart:(CAAnimation *)anim
+{
+    if ([anim valueForKeyPath:ez_animation_delegate_key_for_start]) {
+        AnimationDelegateStart block = [anim valueForKeyPath:ez_animation_delegate_key_for_start];
+        block();
+    }
+}
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+{
+    if ([anim valueForKeyPath:ez_animation_delegate_key_for_completion]) {
+        AnimationDelegateCompletion block = [anim valueForKeyPath:ez_animation_delegate_key_for_completion];
+        block(flag);
+    }
+}
+
 @end
 
 @implementation CALayer (Animation)
@@ -39,7 +60,7 @@
 
 #pragma mark - public
 
-- (EZAnimationManager *)groupAinmation:(EZMaker)maker
+- (void)ez_groupAinmation:(EZMaker)maker
 {
     EZAnimationMaker *m = [[EZAnimationMaker alloc] init];
     maker(m);
@@ -49,7 +70,20 @@
     CAAnimationGroup *group = [manager group];
     group.animations = self.groupAnimations;
     [self addAnimation:group forKey:[m valueForKey:@"_key"]];
-    return manager;
+}
+
+- (void)ez_groupAnimationWithMaker:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion
+{
+    EZAnimationMaker *m = [[EZAnimationMaker alloc] init];
+    maker(m);
+    [self changeAnchorPoint:m.isNormalCoordinate];
+    
+    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
+    CAAnimationGroup *group = [manager group];
+    [group setValue:start forKey:@"ez_animation_delegate_key_for_start"];
+    [group setValue:completion forKey:@"ez_animation_delegate_key_for_completion"];
+    group.animations = self.groupAnimations;
+    [self addAnimation:group forKey:[m valueForKey:@"_key"]];
 }
 
 - (CALayer *)ez_childWithType:(EZAnimationType)type makeAnimation:(EZMaker)maker
@@ -57,7 +91,7 @@
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
     [self changeAnchorPoint:m.isNormalCoordinate];
-
+    
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     if (!self.groupAnimations) {
         self.groupAnimations = [@[] mutableCopy];
@@ -72,9 +106,28 @@
     EZAnimationMaker *m = [EZAnimationMaker new];
     maker(m);
     [self changeAnchorPoint:m.isNormalCoordinate];
-
+    
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
     CAAnimation *result = [manager install];
+    NSString *key = [m valueForKey:@"_key"];
+    if (!ez_validString(key)) {
+        EZLog(@"animation key is null");
+    }
+    [self addAnimation:result forKey:key];
+}
+
+- (void)ez_animationWithType:(EZAnimationType)type makerAnimation:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion
+{
+    EZAnimationMaker *m = [EZAnimationMaker new];
+    maker(m);
+    [self changeAnchorPoint:m.isNormalCoordinate];
+    
+    EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
+    CAAnimation *result = [manager install];
+    result.delegate = self;
+    [result setValue:start forKey:@"ez_animation_delegate_key_for_start"];
+    [result setValue:completion forKey:@"ez_animation_delegate_key_for_completion"];
+    
     NSString *key = [m valueForKey:@"_key"];
     if (!ez_validString(key)) {
         EZLog(@"animation key is null");
@@ -98,6 +151,5 @@
     CFTimeInterval resumetime = [self convertTime:CACurrentMediaTime() fromLayer:nil] - pausetime;
     self.beginTime = resumetime;
 }
-
 
 @end

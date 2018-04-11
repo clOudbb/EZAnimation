@@ -97,6 +97,17 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     };
 }
 
+- (EZAnimationMaker *(^)(bool))removeOnCompletion
+{
+    return ^id (bool remove) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(remove);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
 - (EZAnimationMaker *(^)(float))speed
 {
     return ^id (float speed) {
