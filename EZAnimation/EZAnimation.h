@@ -9,9 +9,7 @@
 #ifndef EZAnimation_h
 #define EZAnimation_h
 
-#import "EZAnimationManager.h"
 #import "CALayer+Animation.h"
-
 
 FOUNDATION_EXPORT EZAnimationKeyPath * const EZAnimationKeyPathPosition;
 FOUNDATION_EXPORT EZAnimationKeyPath * const EZAnimationKeyPathPositionX;

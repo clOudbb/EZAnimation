@@ -41,8 +41,6 @@ EZAnimationKeyPath * const EZAnimationKeyPathBorderWidth = @"borderWidth";
 
 EZAnimationKeyPath * const EZAnimationKeyPathOpacity = @"opacity";
 
-static NSString * const ez_keyPath = @"_keyP";
-
 struct EZAnimationContext {
     void *value;
     void *obj;
@@ -103,8 +101,26 @@ static bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
     } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(timingFunction))]) {
         ani.timingFunction = pro.value;
         return true;
+    } else {
+        if ([ani isKindOfClass:[CAPropertyAnimation class]]) {
+            CAPropertyAnimation *pAnim = (CAPropertyAnimation *)ani;
+            propertyProFilter(pAnim, pro);
+        }
     }
     return false;
+}
+
+static void propertyProFilter(CAPropertyAnimation *pAnim, EZAnimationProperty *pro)
+{
+    if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(keyPath))]) {
+        pAnim.keyPath = pro.value;
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(additive))]) {
+        pAnim.additive = [pro.value boolValue];
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(cumulative))]) {
+        pAnim.cumulative = [pro.value boolValue];
+    } else if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(valueFunction))]) {
+        pAnim.valueFunction = pro.value;
+    }
 }
 
 static bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
@@ -161,37 +177,44 @@ static void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZAnimatio
 
 #pragma mark -
 
+static inline void validKeyPath(NSString *keyPath)
+{
+    if (!ez_validString(keyPath)) {
+        if (DEBUG) {
+            @throw [NSException exceptionWithName:@"EZAnimationManager" reason:@"Animation KeyPath must be nonnull" userInfo:nil];
+        }
+    }
+}
+
 - (CAAnimation *)install
 {
     CAAnimation *ani = nil;
-    if (!ez_validString([_maker valueForKeyPath:ez_keyPath])) {
-        if (DEBUG) {
-            @throw [NSException exceptionWithName:NSStringFromClass([self class]) reason:@"Must be nonnull" userInfo:nil];
-        }
-    }
 
     switch (_type) {
         case EZAnimationTypeBasic:
         {
-            ani = [CABasicAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
+            ani = [CABasicAnimation animation];
             CABasicAnimation *base = (CABasicAnimation *)ani;
             [self enumerateObjUsingBlock:base];
+            validKeyPath(base.keyPath);
             return base;
         }
             break;
         case EZAnimationTypeKey:
         {
-            ani = [CAKeyframeAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
+            ani = [CAKeyframeAnimation animation];
             CAKeyframeAnimation *key = (CAKeyframeAnimation *)ani;
             [self enumerateObjUsingBlock:key];
+            validKeyPath(key.keyPath);
             return key;
         }
             break;
         case EZAnimationTypeSpring:
         {
-            ani = [CASpringAnimation animationWithKeyPath:[_maker valueForKeyPath:ez_keyPath]];
+            ani = [CASpringAnimation animation];
             CASpringAnimation *spring = (CASpringAnimation *)ani;
             [self enumerateObjUsingBlock:spring];
+            validKeyPath(spring.keyPath);
             return spring;
         }
             break;

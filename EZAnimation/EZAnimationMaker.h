@@ -11,6 +11,7 @@
 
 @class EZAnimationProperty;
 @class CAMediaTimingFunction;
+@class CAValueFunction;
 @import CoreGraphics;
 @interface EZAnimationMaker : NSObject
 
@@ -25,6 +26,12 @@
 @property (nonatomic, copy ,readonly) EZAnimationMaker *(^beginTime)(CFTimeInterval beginTime);
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^removeOnCompletion)(bool removeOnCompletion);
 @property (nonatomic, copy ,readonly) EZAnimationMaker *(^timingFunction)(CAMediaTimingFunction *timingFunction);
+
+#pragma mark -- property animation
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^keyPath)(EZAnimationKeyPath *keyPath);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^additive)(bool additive);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^cumulative)(bool cumulative);
+@property (nonatomic, copy, readonly) EZAnimationMaker *(^valueFunction)(CAValueFunction *valueFunction);
 
 #pragma mark -- base
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^toValue)(id toValue);
@@ -46,7 +53,6 @@
 
 #pragma mark --
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
-@property (nonatomic, copy, readonly) EZAnimationMaker *(^animKeyPath)(EZAnimationKeyPath *animKeyPath);
 
 #pragma mark -- custom features
 @property (nonatomic, copy, readonly) EZAnimationMaker *with;

@@ -32,16 +32,13 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 @implementation EZAnimationMaker
 {
     NSString *_key;
-    NSString *_keyP;    //这里要声明一个原始的NSString，因为typeof的类名iOS不会识别为实现了NSCoding协议
 }
 
 
 
 //思路  用manager管理
 //要有管理当前所有动画的功能
-//注意协议处理
-
-//缺少propertAnimation的属性
+//优化每个属性传入的方式，尽量简化
 
 - (instancetype)init
 {
@@ -73,14 +70,6 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 #endif
         }
         self->_key = key;
-        return self;
-    };
-}
-
-- (EZAnimationMaker *(^)(EZAnimationKeyPath *))animKeyPath
-{
-    return ^id(EZAnimationKeyPath *keyPath) {
-        self->_keyP = keyPath;
         return self;
     };
 }
@@ -189,6 +178,55 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
     return ^id(float duration) {
         EZAnimationProperty *p = [EZAnimationProperty new];
         p.value = @(duration);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+#pragma mark -- prop
+
+- (EZAnimationMaker *(^)(NSString *))keyPath
+{
+    return ^id(NSString *keyPath) {
+        if (!ez_validString(keyPath)) {
+            EZLog(@"animation key is null");
+        }
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = keyPath;
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(bool))additive
+{
+    return ^id(bool additive) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(additive);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(bool))cumulative
+{
+    return ^id(bool cum) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = @(cum);
+        p.propertyName = NSStringFromSelector(_cmd);
+        [self.animationPropertys addObject:p];
+        return self;
+    };
+}
+
+- (EZAnimationMaker *(^)(CAValueFunction *))valueFunction
+{
+    return ^id(CAValueFunction *func) {
+        EZAnimationProperty *p = [EZAnimationProperty new];
+        p.value = func;
         p.propertyName = NSStringFromSelector(_cmd);
         [self.animationPropertys addObject:p];
         return self;
