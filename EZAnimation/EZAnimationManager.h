@@ -15,9 +15,8 @@
 
 - (instancetype)initWithType:(EZAnimationType)type maker:(EZAnimationMaker *)maker;
 
-- (CAAnimation *)childAnimation;
-
-- (CAAnimation *)install;
-- (CAAnimationGroup *)group;
+//- (CAAnimation *)childAnimation;
+//- (CAAnimation *)install;
+//- (CAAnimationGroup *)group;
 
 @end

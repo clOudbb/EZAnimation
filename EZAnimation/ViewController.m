@@ -31,10 +31,10 @@ typedef void (^ButtonBlock)(void);
     
     //-- group animation
 //    [[[layer ez_childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
-//        maker.duration(5).animKeyPath(EZAnimationKeyPathOpacity).fromValue(@0).toValue(@1);
+//        maker.duration(5).keyPath(EZAnimationKeyPathOpacity).fromValue(@0).toValue(@1);
 //    }] ez_childWithType:EZAnimationTypeBasic makeAnimation:^(EZAnimationMaker *maker) {
-//        maker.duration(5).animKeyPath(EZAnimationKeyPathPositionY).fromValue(@100).toValue(@500);
-//    }] groupAinmation:^(EZAnimationMaker *maker) {
+//        maker.duration(5).keyPath(EZAnimationKeyPathPositionY).fromValue(@100).toValue(@500);
+//    }] ez_groupAinmation:^(EZAnimationMaker *maker) {
 //        maker.duration(5).autoreverses(true).repeatCount(MAXFLOAT);
 //    }];
 

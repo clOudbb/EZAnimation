@@ -9,7 +9,7 @@
 #import "CALayer+Animation.h"
 #import "EZAnimationMaker.h"
 #import <objc/runtime.h>
-
+#import <objc/message.h>
 static NSString * const ez_animation_delegate_key_for_start = @"ez_animation_delegate_key_for_start";
 static NSString * const ez_animation_delegate_key_for_completion = @"ez_animation_delegate_key_for_completion";
 
@@ -78,7 +78,11 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     [self changeAnchorPoint:m.isNormalCoordinate];
     
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
-    CAAnimationGroup *group = [manager group];
+//    CAAnimationGroup *group = [manager group];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    CAAnimationGroup *group = ((CAAnimationGroup *(*)(id, SEL))(void*)objc_msgSend)((id)manager, @selector(group));
+#pragma clang diagnostic pop
     group.animations = self.groupAnimations;
     [self addAnimation:group forKey:[m valueForKey:@"_key"]];
 }
@@ -90,7 +94,11 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     [self changeAnchorPoint:m.isNormalCoordinate];
     
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:EZAnimationTypeOther maker:m];
-    CAAnimationGroup *group = [manager group];
+//    CAAnimationGroup *group = [manager group];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    CAAnimationGroup *group = ((CAAnimationGroup *(*)(id, SEL))(void*)objc_msgSend)((id)manager, @selector(group));
+#pragma clang diagnostic pop
     [group setValue:start forKey:ez_animation_delegate_key_for_start];
     [group setValue:completion forKey:ez_animation_delegate_key_for_completion];
     group.animations = self.groupAnimations;
@@ -107,7 +115,11 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     if (!self.groupAnimations) {
         self.groupAnimations = [@[] mutableCopy];
     }
-    CAAnimation *ani = [manager childAnimation];
+//    CAAnimation *ani = [manager childAnimation];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    CAAnimation *ani = ((CAAnimation *(*)(id, SEL))(void*)objc_msgSend)((id)manager, @selector(childAnimation));
+#pragma clang diagnostic pop
     [self.groupAnimations addObject:ani];
     return self;
 }
@@ -119,7 +131,11 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     [self changeAnchorPoint:m.isNormalCoordinate];
     
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
-    CAAnimation *result = [manager install];
+//    CAAnimation *result = [manager install];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    CAAnimation *result = ((CAAnimation *(*)(id, SEL))(void*)objc_msgSend)((id)manager, @selector(install));
+#pragma clang diagnostic pop
     NSString *key = [m valueForKey:@"_key"];
     if (!ez_validString(key)) {
         EZLog(@"animation key is null");
@@ -134,7 +150,11 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     [self changeAnchorPoint:m.isNormalCoordinate];
     
     EZAnimationManager *manager = [[EZAnimationManager alloc] initWithType:type maker:m];
-    CAAnimation *result = [manager install];
+//    CAAnimation *result = [manager install];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    CAAnimation *result = ((CAAnimation *(*)(id, SEL))(void*)objc_msgSend)((id)manager, @selector(install));
+#pragma clang diagnostic pop
     result.delegate = self;
     [result setValue:start forKey:ez_animation_delegate_key_for_start];
     [result setValue:completion forKey:ez_animation_delegate_key_for_completion];
