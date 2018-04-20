@@ -27,6 +27,9 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 }
 
 @interface EZAnimationMaker()
+
+@property (nonatomic, strong, readwrite) NSMutableArray <EZAnimationProperty *>*animationPropertys;
+
 @end
 
 @implementation EZAnimationMaker

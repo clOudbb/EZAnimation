@@ -39,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		571784552089E7900029BD89 /* EZAnimationProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EZAnimationProtocol.h; sourceTree = "<group>"; };
 		57C790F22074C93C00AE4261 /* EZAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EZAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		57C790F52074C93C00AE4261 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		57C790F62074C93C00AE4261 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -92,9 +93,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		571784562089E9840029BD89 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				57C7912D2074D32600AE4261 /* EZAnimation.h */,
+				57C791342074D49600AE4261 /* EZAnimationMaker.h */,
+				57C791352074D49600AE4261 /* EZAnimationMaker.m */,
+				57C7912A2074D28700AE4261 /* EZAnimationManager.h */,
+				57C7912B2074D28700AE4261 /* EZAnimationManager.m */,
+				57C791402079B37400AE4261 /* CALayer+Animation.h */,
+				57C791412079B37400AE4261 /* CALayer+Animation.m */,
+				57C791432079C00300AE4261 /* EZAnimationProperty.h */,
+				57C791442079C00300AE4261 /* EZAnimationProperty.m */,
+				571784552089E7900029BD89 /* EZAnimationProtocol.h */,
+				57C7913A2074DD7900AE4261 /* EZAnimationHeader.h */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		57C790E92074C93C00AE4261 = {
 			isa = PBXGroup;
 			children = (
+				571784562089E9840029BD89 /* Source */,
 				57C790F42074C93C00AE4261 /* EZAnimation */,
 				57C7910D2074C93E00AE4261 /* EZAnimationTests */,
 				57C791182074C93E00AE4261 /* EZAnimationUITests */,
@@ -117,16 +137,6 @@
 			children = (
 				57C790F52074C93C00AE4261 /* AppDelegate.h */,
 				57C790F62074C93C00AE4261 /* AppDelegate.m */,
-				57C7912D2074D32600AE4261 /* EZAnimation.h */,
-				57C791342074D49600AE4261 /* EZAnimationMaker.h */,
-				57C791352074D49600AE4261 /* EZAnimationMaker.m */,
-				57C7912A2074D28700AE4261 /* EZAnimationManager.h */,
-				57C7912B2074D28700AE4261 /* EZAnimationManager.m */,
-				57C791402079B37400AE4261 /* CALayer+Animation.h */,
-				57C791412079B37400AE4261 /* CALayer+Animation.m */,
-				57C791432079C00300AE4261 /* EZAnimationProperty.h */,
-				57C791442079C00300AE4261 /* EZAnimationProperty.m */,
-				57C7913A2074DD7900AE4261 /* EZAnimationHeader.h */,
 				57C790F82074C93C00AE4261 /* ViewController.h */,
 				57C790F92074C93C00AE4261 /* ViewController.m */,
 				57C790FB2074C93C00AE4261 /* Main.storyboard */,
