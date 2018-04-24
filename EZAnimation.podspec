@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = 'EZAnimation'
   s.summary      = 'An easy use of core animation kit'
-  s.version      = '0.0.2'
+  s.version      = '0.0.4'
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.authors      = { 'clOudbb' => 'z61723117@163.com' }
   s.social_media_url = 'https://github.com/clOudbb'
