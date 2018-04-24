@@ -180,9 +180,9 @@ static void propertyKeyframeFilter(CAKeyframeAnimation *keyAnimation, EZAnimatio
 static inline void validKeyPath(NSString *keyPath)
 {
     if (!ez_validString(keyPath)) {
-        if (DEBUG) {
+#ifdef DEBUG
             @throw [NSException exceptionWithName:@"EZAnimationManager" reason:@"Animation KeyPath must be nonnull" userInfo:nil];
-        }
+#endif
     }
 }
 

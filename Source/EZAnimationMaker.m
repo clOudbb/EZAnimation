@@ -68,7 +68,7 @@ FOUNDATION_STATIC_INLINE NSString * getFillMode(kEZFillMode mode)
 {
     return ^id (NSString *key) {
         if (!ez_validString(key)) {
-#if DEBUG
+#ifdef DEBUG
             NSLog(@"animation key is null");
 #endif
         }
