@@ -70,10 +70,12 @@ struct EZAnimationContext {
 static bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
 {
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(duration))]) {
-        if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
-            CASpringAnimation *spring = (CASpringAnimation *)ani;
-            ani.duration = spring.settlingDuration;
-            return true;
+        if (@available(iOS 9.0, *)) {
+            if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
+                CASpringAnimation *spring = (CASpringAnimation *)ani;
+                ani.duration = spring.settlingDuration;
+                return true;
+            }
         }
         ani.duration = [pro.value doubleValue];
         return true;
@@ -140,6 +142,7 @@ static bool propertyBaseFilter(CABasicAnimation* ani, EZAnimationProperty *pro)
     return false;
 }
 
+API_AVAILABLE(ios(9.0))
 static void propertySpringFilter(CASpringAnimation *spring, EZAnimationProperty *pro)
 {
     if (propertyBaseFilter(spring, pro)) return;
@@ -211,11 +214,13 @@ static inline void validKeyPath(NSString *keyPath)
             break;
         case EZAnimationTypeSpring:
         {
+            if (@available(iOS 9.0, *)) {
             ani = [CASpringAnimation animation];
-            CASpringAnimation *spring = (CASpringAnimation *)ani;
-            [self enumerateObjUsingBlock:spring];
-            validKeyPath(spring.keyPath);
-            return spring;
+                CASpringAnimation *spring = (CASpringAnimation *)ani;
+                [self enumerateObjUsingBlock:spring];
+                validKeyPath(spring.keyPath);
+                return spring;
+            }
         }
             break;
             
@@ -258,8 +263,10 @@ static void EZAnimationApply(const void *obj, void * context)
             break;
         case EZAnimationTypeSpring:
         {
-            CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
-            propertySpringFilter(spring, pro);
+            if (@available(iOS 9.0, *)) {
+                CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
+                propertySpringFilter(spring, pro);
+            }
         }
             break;
             
