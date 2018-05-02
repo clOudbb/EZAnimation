@@ -20,6 +20,23 @@ A easy use iOS CoreAnimation Kit
 }];
 ```
 
+delegate with the block resolve
+```javascript
+    [layer ez_animationWithType:EZAnimationTypeBasic makerAnimation:^(EZAnimationMaker *maker) {
+        maker.fromValue(@0)
+        .toValue(@375)
+        .duration(10);
+    } start:^{
+        NSLog(@"start");
+    } completion:^(bool flag) {
+        if (flag) {
+            NSLog(@"completion");
+        }
+    }];
+```
+more example see the xcodeproj
+
+
 ### CocoaPods
 
 ```javascript
@@ -27,6 +44,8 @@ A easy use iOS CoreAnimation Kit
 platform :ios, '8.0'
 pod 'EZAnimationObjc', '~> 0.0.5'
 ```
+
+
 
 ### Contact
 
