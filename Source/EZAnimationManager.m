@@ -9,6 +9,7 @@
 #import "EZAnimationManager.h"
 #import "EZAnimationMaker.h"
 #import "EZAnimationProperty.h"
+@import UIKit;
 EZAnimationKeyPath * const EZAnimationKeyPathPosition = @"position";
 EZAnimationKeyPath * const EZAnimationKeyPathPositionX = @"position.x";
 EZAnimationKeyPath * const EZAnimationKeyPathPositionY = @"position.y";
@@ -70,7 +71,14 @@ struct EZAnimationContext {
 static bool propertyFilter(CAAnimation *ani, EZAnimationProperty *pro)
 {
     if ([pro.propertyName isEqualToString:NSStringFromSelector(@selector(duration))]) {
-        if (@available(iOS 9.0, *)) {
+//        if (@available(iOS 9.0, *)) {
+//            if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
+//                CASpringAnimation *spring = (CASpringAnimation *)ani;
+//                ani.duration = spring.settlingDuration;
+//                return true;
+//            }
+//        }
+        if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0) {
             if ([ani isKindOfClass:[CASpringAnimation class]] && [pro.value doubleValue] == 0) {
                 CASpringAnimation *spring = (CASpringAnimation *)ani;
                 ani.duration = spring.settlingDuration;
@@ -214,12 +222,19 @@ static inline void validKeyPath(NSString *keyPath)
             break;
         case EZAnimationTypeSpring:
         {
-            if (@available(iOS 9.0, *)) {
-            ani = [CASpringAnimation animation];
-                CASpringAnimation *spring = (CASpringAnimation *)ani;
-                [self enumerateObjUsingBlock:spring];
-                validKeyPath(spring.keyPath);
-                return spring;
+//            if (@available(iOS 9.0, *)) {
+//            ani = [CASpringAnimation animation];
+//                CASpringAnimation *spring = (CASpringAnimation *)ani;
+//                [self enumerateObjUsingBlock:spring];
+//                validKeyPath(spring.keyPath);
+//                return spring;
+//            }
+            if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0) {
+                            ani = [CASpringAnimation animation];
+                                CASpringAnimation *spring = (CASpringAnimation *)ani;
+                                [self enumerateObjUsingBlock:spring];
+                                validKeyPath(spring.keyPath);
+                                return spring;
             }
         }
             break;
@@ -263,9 +278,13 @@ static void EZAnimationApply(const void *obj, void * context)
             break;
         case EZAnimationTypeSpring:
         {
-            if (@available(iOS 9.0, *)) {
-                CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
-                propertySpringFilter(spring, pro);
+//            if (@available(iOS 9.0, *)) {
+//                CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
+//                propertySpringFilter(spring, pro);
+//            }
+            if ([[[UIDevice currentDevice] systemVersion] doubleValue] >= 9.0) {
+                                CASpringAnimation *spring = (__bridge CASpringAnimation *)_context->ani;
+                                propertySpringFilter(spring, pro);
             }
         }
             break;
