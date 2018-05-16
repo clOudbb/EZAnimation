@@ -1,7 +1,6 @@
 language: objective-c
 osx_image: xcode8
 xcode_project: EZAnimation.xcodeproj
-xcode_scheme: EZAnimation
 
 before_install:
 - env
