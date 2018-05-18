@@ -30,7 +30,7 @@
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^forKey)(NSString *key);
 
 #pragma mark -- custom features
-@property (nonatomic, copy, readonly) EZAnimationMaker *with;
+- (EZAnimationMaker *)with;
 
 @property (nonatomic, copy, readonly) EZAnimationMaker *(^normalCoordinate)(bool normal);  /**< 使用UIView坐标系*/
 
