@@ -9,7 +9,7 @@ A easy use iOS CoreAnimation Kit
 ### Feature
 + simple
 + chain
-+ support most property for core animation kit
++ support most property of core animation kit
 
 ### Example
 ```javascript
