@@ -87,7 +87,7 @@ static NSString * const ez_animation_delegate_key_for_completion = @"ez_animatio
     [self addAnimation:group forKey:[m valueForKey:@"_key"]];
 }
 
-- (void)ez_groupAnimationWithMaker:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion
+- (void)ez_groupAnimation:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion
 {
     EZAnimationMaker *m = [[EZAnimationMaker alloc] init];
     maker(m);

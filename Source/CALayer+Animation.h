@@ -28,7 +28,7 @@ typedef void(^AnimationDelegateCompletion)(bool flag);
  * group动画最后通过该api拼装
  */
 - (void)ez_groupAinmation:(EZMaker)maker;
-- (void)ez_groupAnimationWithMaker:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion;
+- (void)ez_groupAnimation:(EZMaker)maker start:(AnimationDelegateStart)start completion:(AnimationDelegateCompletion)completion;
 /**
  * 动画立即暂停
  */
